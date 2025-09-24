@@ -17,7 +17,6 @@ public class CustomThreadPool {
         }
     }
 
-    // Submit new task to queue
     public void submit(Runnable task) throws IllegalStateException {
         if (isRunning) {
             taskQueue.offer(task);
@@ -27,7 +26,6 @@ public class CustomThreadPool {
 
     }
 
-    // Gracefully shutdown
     public void shutdown() {
         isRunning = false;
         for (int i = 0; i < workers.length; i++) {

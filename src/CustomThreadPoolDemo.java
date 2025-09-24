@@ -16,6 +16,7 @@ public class CustomThreadPoolDemo {
 
         pool.shutdown();
 
+        // пытаемся запустить после shutdown()
         for (int i = 1; i <= 9; i++) {
             int taskId = i;
             pool.submit(() -> {
