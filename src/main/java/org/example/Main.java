@@ -1,53 +1,58 @@
 package org.example;
 
+import org.example.config.ApplicationConfiguration;
 import org.example.config.DatabaseConfig;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 public class Main {
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfig.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
         UserService userService = context.getBean(UserService.class);
 
         // create
-        Optional<User> user = userService.createUser("new user 01");
-        if (user.isPresent()) {
-            System.out.println("Created " + user.get());
-        } else {
-            System.out.println("Error creating user");
+        User user = null;
+        try {
+            user = userService.createUser("new user 01").orElseThrow(RuntimeException::new);
+            System.out.println("Created " + user);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
         // update
-        User changedUser = user.get();
-        changedUser.setUsername("new user chaged name");
-        boolean isUpdated = userService.updateUser(changedUser);
-        if (isUpdated) {
-            System.out.println("Updated " + user.get());
-        } else {
-            System.out.println("Error updating " + changedUser);
+        user.setUsername("new user chaged name");
+        try {
+            userService.updateUser(user);
+            System.out.println("Updated " + user);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
         // delete
-        boolean isDeleted = userService.deleteUser(user.get());
-        if (isDeleted) {
-            System.out.println("Deleted " + user.get());
-        } else {
-            System.out.println("Error deleting user");
+        try {
+            userService.deleteUser(user);
+            System.out.println("Deleted " + user);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
         // find all
-        List<User> users = userService.findAll();
-        System.out.println("Found " + users.size() + " users");
+        try {
+            List<User> users = userService.findAll();
+            System.out.println("Found " + users.size() + " users");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
         // find
         long foundUserId = 1L;
-        Optional<User> foundedUser = userService.findById(foundUserId);
-        if (foundedUser.isPresent()) {
-            System.out.println("Found " + foundedUser.get());
-        } else {
-            System.out.println("Error finding user with id " + foundUserId);
+        try {
+            User foundedUser = userService.findById(foundUserId).orElseThrow(RuntimeException::new);
+            System.out.println("Found " + foundedUser);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

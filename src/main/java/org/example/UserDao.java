@@ -1,6 +1,7 @@
 package org.example;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.*;
@@ -10,14 +11,15 @@ import java.util.Optional;
 
 @Component
 public class UserDao {
-    private HikariDataSource dataSource;
+    private final HikariDataSource dataSource;
     private final String table_name = "service_user";
 
+    @Autowired
     public UserDao(HikariDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public Optional<User> find(long id) {
+    public Optional<User> find(long id) throws SQLException {
         try {
             Connection connection = dataSource.getConnection();
             String sql = String.format("select id, username from %s where id = %s", table_name, id);
@@ -35,12 +37,11 @@ public class UserDao {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            return Optional.empty();
+            throw new SQLException(e);
         }
     }
 
-    public List<User> findAll() {
+    public List<User> findAll() throws SQLException {
         try {
             Connection connection = dataSource.getConnection();
             String sql = String.format("select * from %s", table_name);
@@ -61,7 +62,7 @@ public class UserDao {
         }
     }
 
-    public Optional<User> create(String username) {
+    public Optional<User> create(String username) throws SQLException {
         try {
             Connection connection = dataSource.getConnection();
             String sql = String.format("insert into %s(username) values('%s')", table_name, username);
@@ -84,12 +85,11 @@ public class UserDao {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            return Optional.empty();
+            throw new RuntimeException(e);
         }
     }
 
-    public Boolean update(User user) {
+    public void update(User user) throws SQLException {
         try {
             Connection connection = dataSource.getConnection();
             String sql = String.format("update %s set username = '%s' where id = %s", table_name, user.getUsername(), user.getId());
@@ -97,15 +97,13 @@ public class UserDao {
             statement.executeUpdate();
             statement.close();
             connection.close();
-            return true;
 
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
-    public Boolean delete(User user) {
+    public void delete(User user) throws SQLException {
         try {
             Connection connection = dataSource.getConnection();
             String sql = String.format("delete from %s where id = %s", table_name, user.getId());
@@ -113,11 +111,9 @@ public class UserDao {
             statement.executeUpdate();
             statement.close();
             connection.close();
-            return true;
 
         } catch (SQLException e) {
-            e.printStackTrace(System.out);
-            return false;
+            throw new RuntimeException(e);
         }
     }
 
