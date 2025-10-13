@@ -7,18 +7,18 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-@Configuration
-@PropertySource("classpath:application.properties")
-public class DatabaseConfig {
-
-    @Value("${database.connection_url}")
-    private String url;
-
-    @Bean
-    public HikariDataSource dataSource() {
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl(url);
-        dataSource.setMaximumPoolSize(4);
-        return dataSource;
-    }
-}
+//@Configuration
+//@PropertySource("classpath:application.properties")
+//public class DatabaseConfig {
+//
+//    @Value("${database.connection_url}")
+//    private String url;
+//
+//    @Bean
+//    public HikariDataSource dataSource() {
+//        HikariDataSource dataSource = new HikariDataSource();
+//        dataSource.setJdbcUrl(url);
+//        dataSource.setMaximumPoolSize(4);
+//        return dataSource;
+//    }
+//}
