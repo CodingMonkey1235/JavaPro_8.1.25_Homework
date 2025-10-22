@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
+
 @Entity
 @Table(name = "service_users")
 public class User {
@@ -26,6 +29,11 @@ public class User {
     @Column(name = "group_id")
     private long groupId;
 
+    @Getter @Setter
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private List<Product> products;
+
     public User() {}
 
     public User(long id, String username, String email, long groupId) {
@@ -37,6 +45,6 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("User { id=%d, username='%s', email='%s', group_id='%s'}",id, username, email, groupId);
+        return String.format("User {id='%d', username='%s', email='%s', group_id='%s'}", id, username, email, groupId);
     }
 }
