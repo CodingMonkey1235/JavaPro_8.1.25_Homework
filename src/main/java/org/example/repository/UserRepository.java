@@ -4,6 +4,7 @@ import org.example.entity.User;
 import org.example.service.UserProfileProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -19,4 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "select count(*) from service_users where group_id = 3", nativeQuery = true)
     long findPremiumGroupUsersCount();
+
+    @Query(value = "select * from service_users where id = :id", nativeQuery = true)
+    Optional<User> findByIdWithProducts(@Param("id") long id);
 }

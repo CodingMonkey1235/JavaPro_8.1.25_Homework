@@ -1,51 +1,36 @@
 package org.example.service;
 
-import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.example.dto.allUsers.AllUsersDto;
+import org.example.dto.allUsers.AllUsersSimpleDto;
+import org.example.dto.allUsers.mapper.FindAllUsersMapper;
 import org.example.entity.User;
 import org.example.repository.UserRepository;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
-public class UserService implements CommandLineRunner {
+public class UserService {
 
     private final UserRepository userRepository;
 
-    @Override
-    public void run(String... args) throws Exception {
-        // find all
-        userRepository.findAll().forEach(it -> log.info(it.toString()));
-
-        // find one
-        User userById = userRepository.findById(3L).orElseThrow(EntityNotFoundException::new);
-        log.info(String.valueOf(userById));
-
-        User userByName = userRepository.findByUsername("first_user").orElseThrow(EntityNotFoundException::new);
-        log.info(String.valueOf(userByName));
-
-        User userByIdAndName = userRepository.findByIdAndUsername(2L, "first_user").orElseThrow(EntityNotFoundException::new);
-        log.info(String.valueOf(userByIdAndName));
-
-        // query
-        long premiumUsersCount = userRepository.findPremiumGroupUsersCount();
-        log.info("premiumUsersCount: " + premiumUsersCount);
-
-        // projection
-        UserProfileProjection userProfileProjection = userRepository
-                .findByIdAndUsernameAndEmail(4L, "user4", "user4@mail.ru")
-                .orElseThrow(EntityNotFoundException::new);
-        log.info(userProfileProjection.toString());
-
-        // update
-        userById.setUsername("changed_username");
-        User saveduser = userRepository.save(userById);
-        System.out.println(saveduser.toString());
-
-        // delete
-        userRepository.delete(userById);
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
+
+    @Transactional
+    public AllUsersDto findAllUsers() {
+        List<User> users = userRepository.findAll();
+        return FindAllUsersMapper.mapFindAllUsers(users);
+    }
+
+    public AllUsersSimpleDto findAllUsersTest() {
+        List<User> users = userRepository.findAll();
+        List<String> usersDtos = users.stream().map(User::getUsername).toList();
+        return new AllUsersSimpleDto(usersDtos);
+    }
+
 }
