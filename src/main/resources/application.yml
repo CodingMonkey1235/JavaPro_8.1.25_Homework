@@ -21,6 +21,4 @@ spring:
     username: ash
     password:
     locations: classpath:db/migration
-#logging:
-#  level:
-#    root: debug
+    

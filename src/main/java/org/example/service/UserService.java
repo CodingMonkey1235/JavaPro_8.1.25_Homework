@@ -7,14 +7,13 @@ import org.example.dto.allUsers.AllUsersSimpleDto;
 import org.example.dto.allUsers.mapper.FindAllUsersMapper;
 import org.example.entity.User;
 import org.example.repository.UserRepository;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Slf4j
 @Service
-public class UserService implements CommandLineRunner {
+public class UserService {
 
     private final UserRepository userRepository;
 
@@ -34,8 +33,4 @@ public class UserService implements CommandLineRunner {
         return new AllUsersSimpleDto(usersDtos);
     }
 
-    @Override
-    public void run(String... args) throws Exception {
-
-    }
 }

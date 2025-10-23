@@ -6,30 +6,25 @@ import lombok.Setter;
 
 import java.util.List;
 
-
 @Entity
 @Table(name = "service_users")
+@Getter @Setter
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @Getter
     private long id;
 
-    @Getter @Setter
     @Column(name = "username")
     private String username;
 
-    @Getter @Setter
     @Column(name = "email")
     private String email;
 
-    @Getter @Setter
     @Column(name = "group_id")
     private long groupId;
 
-    @Getter @Setter
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private List<Product> products;

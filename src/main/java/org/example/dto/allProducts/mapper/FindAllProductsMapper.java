@@ -20,7 +20,7 @@ public class FindAllProductsMapper {
                             item.getProductType(),
                             new AllProductsProductUserDto(user.getUsername())
                     );
-                }).collect(Collectors.toList());
+                }).toList();
         return new AllProductsDto(productsDto);
     }
 }

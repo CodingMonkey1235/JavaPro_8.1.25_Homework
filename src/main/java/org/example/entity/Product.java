@@ -8,27 +8,23 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "products")
+@Getter @Setter
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @Getter
     private long id;
 
-    @Getter @Setter
     @Column(name = "account_number")
     private String accountNumber;
 
-    @Getter @Setter
     @Column(name = "balance")
     private BigDecimal balance;
 
-    @Getter @Setter
     @Column(name = "product_type")
     private String productType;
 
-    @Getter @Setter
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

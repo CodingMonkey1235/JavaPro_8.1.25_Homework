@@ -19,9 +19,9 @@ public class FindAllUsersMapper {
                                 item.getBalance(),
                                 item.getProductType()
                         );
-                    }).collect(Collectors.toList());
+                    }).toList();
             return new AllUsersUserDto(user.getUsername(), user.getEmail(), usersProductDtos);
-        }).collect(Collectors.toList());
+        }).toList();
         return new AllUsersDto(usersDto);
     }
 }

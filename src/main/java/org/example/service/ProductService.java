@@ -7,15 +7,14 @@ import org.example.dto.allProducts.AllProductsProductUserDto;
 import org.example.dto.allProducts.mapper.FindAllProductsMapper;
 import org.example.entity.Product;
 import org.example.repository.ProductRepository;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
-public class ProductService implements CommandLineRunner {
+public class ProductService {
 
     private final ProductRepository productRepository;
 
@@ -28,17 +27,12 @@ public class ProductService implements CommandLineRunner {
         return FindAllProductsMapper.mapFindAllProducts(products);
     }
 
-    public Optional<AllProductsProductDto> findProductById(Long id) {
-        Product product = productRepository.findById(id)
-                .orElse(null);
+    public AllProductsProductDto findProductById(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(NoSuchElementException::new);
         AllProductsProductUserDto userDto = new AllProductsProductUserDto(product.getUser().getUsername());
         AllProductsProductDto productDto =  new AllProductsProductDto(product.getAccountNumber(), product.getBalance(),
                 product.getProductType(), userDto);
-        return Optional.of(productDto);
-    }
-
-    public void run(String... args) throws Exception {
-
+        return productDto;
     }
 
 }

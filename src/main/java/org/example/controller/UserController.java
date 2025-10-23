@@ -2,11 +2,12 @@ package org.example.controller;
 
 import org.example.dto.allUsers.AllUsersDto;
 import org.example.service.UserService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/api/v1/users")
 public class UserController {
 
     private final UserService userService;
@@ -15,7 +16,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/")
+    @GetMapping(value = "/")
     AllUsersDto findAllUsers() {
         return userService.findAllUsers();
     }
