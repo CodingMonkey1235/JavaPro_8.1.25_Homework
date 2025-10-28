@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.commonError.CommonErrorResponseDto;
 import org.example.dto.paymentExecute.PaymentExecuteRequestDto;
 import org.example.dto.paymentExecute.PaymentExecuteResponseDto;
+import org.example.exception.PaymentExecuteException;
 import org.example.service.PaymentExecuteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -34,4 +35,10 @@ public class PaymentExecuteController {
     CommonErrorResponseDto handleRequestError(Exception exception) {
         return new CommonErrorResponseDto(exception.getClass().getSimpleName(), exception.getMessage());
     }
+
+    @ExceptionHandler(PaymentExecuteException.class)
+    public PaymentExecuteResponseDto paymentExecuteException(Exception exception) {
+        return new PaymentExecuteResponseDto("ERROR " + exception.getClass().getSimpleName(), exception.getMessage());
+    }
+
 }

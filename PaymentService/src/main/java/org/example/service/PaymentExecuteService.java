@@ -5,15 +5,10 @@ import org.example.dto.clientProduct.request.ClientProductRequestDto;
 import org.example.dto.clientProduct.response.ClientProductResponseDto;
 import org.example.dto.clientProductUpdate.ClientProductUpdateRequestDto;
 import org.example.dto.clientProductUpdate.ClientProductUpdateResponseDto;
-import org.example.dto.commonError.CommonErrorResponseDto;
 import org.example.dto.paymentExecute.PaymentExecuteRequestDto;
 import org.example.dto.paymentExecute.PaymentExecuteResponseDto;
 import org.example.exception.PaymentExecuteException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
@@ -47,14 +42,4 @@ public class PaymentExecuteService {
         }
     }
 
-    @ExceptionHandler(value = PaymentExecuteException.class)
-    public PaymentExecuteResponseDto handleException(Exception exception) {
-        return new PaymentExecuteResponseDto("ERROR", exception.getMessage());
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    CommonErrorResponseDto handleRequestError(Exception exception) {
-        return new CommonErrorResponseDto("ERROR", exception.getMessage());
-    }
 }

@@ -13,11 +13,12 @@ import org.springframework.web.client.RestTemplate;
 public class AppConfiguration {
 
     @Bean
-    public RestTemplate restTemplateClientProductsClient(RestTemplateProperties clientProductsProperties) {
+    public RestTemplate restTemplateClientProductsClient(RestTemplateProperties clientProductsProperties, RestTemplateResponseErrorHandler  restTemplateResponseErrorHandler) {
         return new RestTemplateBuilder()
                 .rootUri(clientProductsProperties.getUrl())
                 .setConnectTimeout(clientProductsProperties.getConnectTimeout())
                 .setReadTimeout(clientProductsProperties.getReadTimeout())
+                .errorHandler(restTemplateResponseErrorHandler)
                 .build();
     }
 
