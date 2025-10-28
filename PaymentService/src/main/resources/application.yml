@@ -1,0 +1,33 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/Javapro_Homework
+    username: ash
+    password:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none # Options: none, update, create, create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true # Set to false in production
+        format_sql: false # Set to false in production
+    open-in-view: false # Recommended for better performance and transaction management
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: '0'
+    url: jdbc:postgresql://localhost/Javapro_Homework
+    username: ash
+    password:
+    locations: classpath:db/migration
+
+integrations:
+  clients:
+    client-products-properties:
+      url: "http://localhost:8080/api/v1"
+      connect-timeout: 30s
+      read-timeout: 30s

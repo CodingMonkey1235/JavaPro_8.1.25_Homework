@@ -1,0 +1,45 @@
+package org.example.entity;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+
+@Entity
+@Table(name = "service_users")
+@Getter @Setter
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private long id;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "group_id")
+    private long groupId;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private List<Product> products;
+
+    public User() {}
+
+    public User(long id, String username, String email, long groupId) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.groupId = groupId;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("User {id='%d', username='%s', email='%s', group_id='%s'}", id, username, email, groupId);
+    }
+}
